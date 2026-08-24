@@ -6,4 +6,6 @@ urlpatterns = [
     #rota,view responsavel, nome referencia
     #pagina home
     path('',views.home, name='home'), 
+    path('listagemAluno/',views.listagemAluno,name='listagemAluno')
+
 ]

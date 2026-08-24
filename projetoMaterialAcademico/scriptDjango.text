@@ -1,0 +1,19 @@
+source venv/bin/activate - entra no ambiente virtual(venv)
+django-admin startproject projetoMaterialAcademico - comando do django que cria o projeto
+django-admin startapp app - comando do django que cria o arquivo app
+python manage.py runserver - roda o projeto localmente
+sudo apt install python3-dev default-libmysqlclient-dev build-essential pkg-config -liberacao do linux para baixar o mysql cliente
+pip install mysqlclient - instala o cliente do mysql no ambiente virtual python
+python manage.py inspectdb > app/models.py - cria um model com as tabelas do banco conectado
+
+config do mysql
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'materialAcademico',
+        'USER': 'root',
+        'PASSWORD': 'antonio',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
