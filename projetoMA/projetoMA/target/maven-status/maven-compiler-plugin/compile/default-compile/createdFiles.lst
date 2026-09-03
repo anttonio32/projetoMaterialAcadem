@@ -1,6 +1,9 @@
 com\mycompany\projetoma\resources\JakartaEE11Resource.class
 controller\DisciplinaController.class
 dao\DisciplinaDAO.class
+dao\SemestreDAO.class
 model\Disciplina.class
 com\mycompany\projetoma\JakartaRestConfiguration.class
+controller\SemestreController.class
+model\Semestre.class
 service\ConnectionBD.class
