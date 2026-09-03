@@ -1,9 +1,6 @@
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\com\mycompany\projetoma\JakartaRestConfiguration.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\com\mycompany\projetoma\resources\JakartaEE11Resource.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\controller\DisciplinaController.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\controller\SemestreController.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\dao\DisciplinaDAO.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\dao\SemestreDAO.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\model\Disciplina.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\model\Semestre.java
-C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\src\main\java\service\ConnectionBD.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\com\mycompany\projetoma\JakartaRestConfiguration.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\com\mycompany\projetoma\resources\JakartaEE11Resource.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\controller\DisciplinaController.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\dao\DisciplinaDAO.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\model\Disciplina.java
+C:\Users\antto\Documents\GitHub\projetoMaterialAcadem\projetoMA\projetoMA\src\main\java\service\ConnectionBD.java
