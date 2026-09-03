@@ -20,12 +20,6 @@
             <h5>Etapas (Semestres)</h5>
         </div>
         <section id="etapas">
-            <c:forEach var="e" items="${['I','II','III','IV','V','VI','VII','VIII']}">
-                <a href="<c:url value='/disciplina'><c:param name='etapa' value='${e}'/></c:url>"
-                   class="tab-semestre ${etapaAtual == e ? 'active' : ''}">
-                    ${e}
-                </a>
-            </c:forEach>
         </section>
     </div>
 
@@ -52,8 +46,6 @@
                         <c:forEach var="d" items="${disciplinas}">
                             <tr>
                                 <td>${d.nome}</td>
-                                <td>${d.cargaHoraria}</td>
-                                <td>${d.professor}</td>
                                 <td class="text-center">
                                     <a href="<c:url value='/disciplina'><c:param name='acao' value='ver'/><c:param name='id' value='${d.idDisc}'/></c:url>" class="acao-btn ver"><i class="bi bi-eye"></i></a>
                                     <a href="<c:url value='/disciplina'><c:param name='acao' value='editar'/><c:param name='id' value='${d.idDisc}'/></c:url>" class="acao-btn editar"><i class="bi bi-pencil"></i></a>
