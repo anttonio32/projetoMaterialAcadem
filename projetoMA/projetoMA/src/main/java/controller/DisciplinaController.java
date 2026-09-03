@@ -1,5 +1,7 @@
 package controller;
+
 import dao.DisciplinaDAO;
+import dao.SemestreDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,11 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import model.Disciplina;
+import model.Semestre;
 
 @WebServlet("/disciplina")
 public class DisciplinaController extends HttpServlet {
 
     private final DisciplinaDAO dao = new DisciplinaDAO();
+    private final SemestreDAO semestreDao = new SemestreDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,8 +28,11 @@ public class DisciplinaController extends HttpServlet {
             case "excluir":
                 excluir(request, response);
                 break;
-            case "ver":
-                ver(request, response);
+            case "novo":
+                novo(request, response);
+                break;
+            case "editar":
+                editar(request, response);
                 break;
             default:
                 listar(request, response);
@@ -47,7 +54,7 @@ public class DisciplinaController extends HttpServlet {
         }
     }
 
-    // GET /disciplinas?etapa=I  -> lista as disciplinas da etapa (ou I por padrão)
+    // GET /disciplina?etapa=I  -> lista as disciplinas da etapa (ou I por padrão)
     private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String etapa = request.getParameter("etapa");
@@ -57,31 +64,43 @@ public class DisciplinaController extends HttpServlet {
         List<Disciplina> disciplinas = dao.listarPorEtapa(etapa);
         request.setAttribute("etapaAtual", etapa);
         request.setAttribute("disciplinas", disciplinas);
-        request.getRequestDispatcher("/semestres.jsp").forward(request, response);
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
-    // GET /disciplinas?acao=ver&id=5 -> exibe detalhes de uma disciplina
-    private void ver(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // GET /disciplina?acao=novo&etapa=I -> abre form de cadastro em branco
+    private void novo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        List<Semestre> semestres = semestreDao.listarTodos();
+        request.setAttribute("semestres", semestres);
+        request.setAttribute("etapaAtual", request.getParameter("etapa"));
+        request.getRequestDispatcher("/formDisciplina.jsp").forward(request, response);
+    }
+
+    // GET /disciplina?acao=editar&id=5 -> abre form já preenchido
+    private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int idDisc = Integer.parseInt(request.getParameter("id"));
         Disciplina disciplina = dao.buscarPorId(idDisc);
+        List<Semestre> semestres = semestreDao.listarTodos();
+
         request.setAttribute("disciplina", disciplina);
-        request.getRequestDispatcher("/disciplinaDetalhe.jsp").forward(request, response);
+        request.setAttribute("semestres", semestres);
+        request.getRequestDispatcher("/formDisciplina.jsp").forward(request, response);
     }
 
-    // POST /disciplinas -> cadastra nova disciplina
+    // POST /disciplina -> cadastra nova disciplina
     private void inserir(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Disciplina disc = new Disciplina();
         disc.setNome(request.getParameter("nome"));
         disc.setIdSem(Integer.parseInt(request.getParameter("idSem")));
         dao.inserir(disc);
-        // volta pra listagem da etapa correspondente
+
         String etapa = request.getParameter("etapa");
-        response.sendRedirect("disciplinas?etapa=" + (etapa != null ? etapa : "I"));
+        response.sendRedirect("disciplina?etapa=" + (etapa != null ? etapa : "I"));
     }
 
-    // POST /disciplinas?acao=atualizar -> edita disciplina existente
+    // POST /disciplina?acao=atualizar -> edita disciplina existente
     private void atualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Disciplina disc = new Disciplina();
@@ -89,16 +108,18 @@ public class DisciplinaController extends HttpServlet {
         disc.setNome(request.getParameter("nome"));
         disc.setIdSem(Integer.parseInt(request.getParameter("idSem")));
         dao.atualizar(disc);
+
         String etapa = request.getParameter("etapa");
-        response.sendRedirect("disciplinas?etapa=" + (etapa != null ? etapa : "I"));
+        response.sendRedirect("disciplina?etapa=" + (etapa != null ? etapa : "I"));
     }
 
-    // GET /disciplinas?acao=excluir&id=5&etapa=I -> remove disciplina
+    // GET /disciplina?acao=excluir&id=5&etapa=I -> remove disciplina
     private void excluir(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
         int idDisc = Integer.parseInt(request.getParameter("id"));
         dao.excluir(idDisc);
+
         String etapa = request.getParameter("etapa");
-        response.sendRedirect("disciplinas?etapa=" + (etapa != null ? etapa : "I"));
+        response.sendRedirect("disciplina?etapa=" + (etapa != null ? etapa : "I"));
     }
 }

@@ -32,30 +32,32 @@
     <div id="disciplinas">
         <div class="card-header-custom">
             <h5>Disciplinas da Etapa ${etapaAtual}</h5>
-            <button class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Nova Disciplina</button>
+            <a href="<c:url value='/disciplina'><c:param name='acao' value='novo'/><c:param name='etapa' value='${etapaAtual}'/></c:url>"
+               class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Nova Disciplina
+            </a>
         </div>
         <table class="table">
             <thead>
                 <tr>
                     <th>Disciplina</th>
-                    <th>Carga Horária</th>
-                    <th>Professor</th>
                     <th class="text-center">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <c:choose>
                     <c:when test="${empty disciplinas}">
-                        <tr><td colspan="4" class="text-center text-muted py-3">Nenhuma disciplina cadastrada</td></tr>
+                        <tr><td colspan="2" class="text-center text-muted py-3">Nenhuma disciplina cadastrada</td></tr>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="d" items="${disciplinas}">
                             <tr>
-                                <td>${d.nome}</td>
-                                <td>${d.cargaHoraria}</td>
-                                <td>${d.professor}</td>
+                                <td>
+                                    <a href="<c:url value='/material'><c:param name='idDisc' value='${d.idDisc}'/></c:url>">
+                                        ${d.nome}
+                                    </a>
+                                </td>
                                 <td class="text-center">
-                                    <a href="<c:url value='/disciplina'><c:param name='acao' value='ver'/><c:param name='id' value='${d.idDisc}'/></c:url>" class="acao-btn ver"><i class="bi bi-eye"></i></a>
                                     <a href="<c:url value='/disciplina'><c:param name='acao' value='editar'/><c:param name='id' value='${d.idDisc}'/></c:url>" class="acao-btn editar"><i class="bi bi-pencil"></i></a>
                                     <a href="<c:url value='/disciplina'><c:param name='acao' value='excluir'/><c:param name='id' value='${d.idDisc}'/><c:param name='etapa' value='${etapaAtual}'/></c:url>" class="acao-btn excluir"><i class="bi bi-trash"></i></a>
                                 </td>
