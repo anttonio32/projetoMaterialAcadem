@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: #e2e0df;
+    display: block;
+    min-height: 100vh;
+}
+
+#navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+#semestres, #disciplinas{
+    background-color: #fff;
+    max-width: 1000px;
+    margin: 20px auto 0 auto;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+#semestres{
+    margin-top: 90px;
+}
+
+#disciplinas{
+    margin-top: 20px;
+}
+
+.card-header-custom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.card-header-custom h5{
+    font-weight: 600;
+    margin: 0;
+}
+
+.btn-icon{
+    border: 1px solid #dcdcdc;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover{
+    border-color: #3f6fee;
+    color: #3f6fee;
+}
+
+#etapas{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tab-semestre{
+    flex: 1 1 100px;
+    min-width: 70px;
+    padding: 12px 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-semestre:hover{
+    border-color: #3f6fee;
+    color: #3f6fee;
+}
+
+.tab-semestre.active{
+    background-color: #3f6fee;
+    border-color: #3f6fee;
+    color: #fff;
+    font-weight: 500;
+}
+
+#tabela-disciplinas th{
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+    border-bottom: 1px solid #eee;
+}
+
+#tabela-disciplinas td{
+    vertical-align: middle;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.acao-btn{
+    border: none;
+    background: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.acao-btn.ver{ color: #3f6fee; }
+.acao-btn.editar{ color: #f0ad4e; }
+.acao-btn.excluir{ color: #e05555; }
+
+.acao-btn:hover{
+    background-color: #f5f5f5;
+}
+
+.total-disciplinas{
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 10px;
+}
