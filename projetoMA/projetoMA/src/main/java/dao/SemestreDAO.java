@@ -5,11 +5,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SemestreDAO {
 
+    public List<String> listarEtapasCadastradas() {
+        List<String> etapas = new ArrayList<>();
+        String sql = "SELECT DISTINCT Etapa FROM Semestre "
+                   + "ORDER BY FIELD(Etapa,'I','II','III','IV','V','VI','VII','VIII')";
+
+        try (Connection conn = ConnectionBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                etapas.add(rs.getString("Etapa"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return etapas;
+    }
+    
+    
     // lista todos os semestres cadastrados, do mais recente pro mais antigo
     public List<Semestre> listarTodos() {
         List<Semestre> lista = new ArrayList<>();
@@ -79,23 +101,30 @@ public class SemestreDAO {
     }
 
     // insere um novo semestre
-    public boolean inserir(Semestre sem) {
-        String sql = "INSERT INTO Semestre (dataInicio, dataFim, Etapa) VALUES (?, ?, ?)";
+    public String inserir(Semestre sem) {
+    String sql = "INSERT INTO Semestre (dataInicio, dataFim, Etapa) VALUES (?, ?, ?)";
 
-        try (Connection conn = ConnectionBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    try (Connection conn = ConnectionBD.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setDate(1, sem.getDataInicio());
+        stmt.setDate(2, sem.getDataFim());
+        stmt.setString(3, sem.getEtapa());
+        stmt.executeUpdate();
+        return null; // sucesso
 
-            stmt.setDate(1, sem.getDataInicio());
-            stmt.setDate(2, sem.getDataFim());
-            stmt.setString(3, sem.getEtapa());
+    } catch (SQLIntegrityConstraintViolationException e) {
+        // capturado quando o unique index de Etapa é violado
+        return "Já existe um semestre cadastrado para a Etapa " + sem.getEtapa() + ".";
 
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    } catch (SQLException e) {
+        // capturado quando a trigger de validação de data dispara (SIGNAL SQLSTATE '45000')
+        if (e.getSQLState() != null && e.getSQLState().equals("45000")) {
+            return e.getMessage();
         }
+        e.printStackTrace();
+        return "Erro ao cadastrar semestre.";
     }
+}
 
     // atualiza um semestre existente
     public boolean atualizar(Semestre sem) {

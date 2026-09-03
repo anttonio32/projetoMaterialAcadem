@@ -13,7 +13,7 @@ public class MaterialDAO {
     public List<Material> listarPorDisciplina(int idDisc) {
         List<Material> lista = new ArrayList<>();
         String sql = "SELECT idMat, nome, tipo, caminhoArquivo, idDisc "
-                   + "FROM Material_academico WHERE idDisc = ?";
+                   + "FROM MaterialAcademico WHERE idDisc = ?";
 
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class MaterialDAO {
     }
 
     public boolean inserir(Material m) {
-        String sql = "INSERT INTO Material_academico (nome, tipo, caminhoArquivo, idDisc) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO MaterialAcademico (nome, tipo, caminhoArquivo, idDisc) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class MaterialDAO {
     }
 
     public boolean excluir(int idMat) {
-        String sql = "DELETE FROM Material_academico WHERE idMat = ?";
+        String sql = "DELETE FROM MaterialAcademico WHERE idMat = ?";
 
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -76,7 +76,7 @@ public class MaterialDAO {
     // usado no controller pra saber o caminho do arquivo antes de excluir do disco
     public Material buscarPorId(int idMat) {
         Material m = null;
-        String sql = "SELECT idMat, nome, tipo, caminhoArquivo, idDisc FROM Material_academico WHERE idMat = ?";
+        String sql = "SELECT idMat, nome, tipo, caminhoArquivo, idDisc FROM MaterialAcademico WHERE idMat = ?";
 
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

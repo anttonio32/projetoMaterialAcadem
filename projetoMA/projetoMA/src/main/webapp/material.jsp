@@ -11,13 +11,19 @@
 <body>
     <div id="navbar">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <a class="navbar-brand" href="<c:url value='/index.jsp'/>">Gestão de Materiais</a>
+            <a class="navbar-brand" href="disciplina">Gestão de Materiais</a>
         </nav>
     </div>
 
+    <%
+        model.Disciplina disciplina = (model.Disciplina) request.getAttribute("disciplina");
+        java.util.List<model.Material> materiais =
+            (java.util.List<model.Material>) request.getAttribute("materiais");
+    %>
+
     <div id="disciplinas">
         <div class="card-header-custom">
-            <h5>Materiais de ${disciplina.nome}</h5>
+            <h5>Materiais de <%= disciplina.getNome() %></h5>
         </div>
 
         <table class="table">
@@ -29,25 +35,22 @@
                 </tr>
             </thead>
             <tbody>
-                <c:choose>
-                    <c:when test="${empty materiais}">
-                        <tr><td colspan="3" class="text-center text-muted py-3">Nenhum material cadastrado</td></tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="m" items="${materiais}">
-                            <tr>
-                                <td>${m.nome}</td>
-                                <td>${m.tipo}</td>
-                                <td class="text-center">
-                                    <a href="<c:url value='/material'><c:param name='acao' value='excluir'/><c:param name='id' value='${m.idMat}'/><c:param name='idDisc' value='${disciplina.idDisc}'/></c:url>" class="acao-btn excluir"><i class="bi bi-trash"></i></a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                <% if (materiais == null || materiais.isEmpty()) { %>
+                    <tr><td colspan="3" class="text-center text-muted py-3">Nenhum material cadastrado</td></tr>
+                <% } else {
+                    for (model.Material m : materiais) { %>
+                        <tr>
+                            <td><%= m.getNome() %></td>
+                            <td><%= m.getTipo() %></td>
+                            <td class="text-center">
+                                <a href="material?acao=excluir&id=<%= m.getIdMat() %>&idDisc=<%= disciplina.getIdDisc() %>" class="acao-btn excluir"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                <%  }
+                } %>
             </tbody>
         </table>
-        <p class="total-disciplinas">Total de materiais: ${materiais.size()}</p>
+        <p class="total-disciplinas">Total de materiais: <%= materiais != null ? materiais.size() : 0 %></p>
     </div>
 
     <div id="disciplinas">
@@ -55,8 +58,8 @@
             <h5>Novo Material</h5>
         </div>
 
-        <form method="post" action="<c:url value='/material'/>" enctype="multipart/form-data">
-            <input type="hidden" name="idDisc" value="${disciplina.idDisc}">
+        <form method="post" action="material" enctype="multipart/form-data">
+            <input type="hidden" name="idDisc" value="<%= disciplina.getIdDisc() %>">
 
             <div class="mb-3">
                 <label class="form-label">Nome do material</label>

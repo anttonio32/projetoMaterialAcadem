@@ -11,31 +11,45 @@
 <body>
     <div id="navbar">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <a class="navbar-brand" href="<c:url value='/index.html'/>">Gestão de Materiais</a>
+            <a class="navbar-brand" href="disciplina">Gestão de Materiais</a>
         </nav>
     </div>
 
+    <%
+        String etapaAtual = (String) request.getAttribute("etapaAtual");
+        java.util.List<String> etapasDisponiveis =
+            (java.util.List<String>) request.getAttribute("etapasDisponiveis");
+        java.util.List<model.Disciplina> disciplinas =
+            (java.util.List<model.Disciplina>) request.getAttribute("disciplinas");
+    %>
     <div id="semestres">
         <div class="card-header-custom">
             <h5>Etapas (Semestres)</h5>
+            <a href="semestre?acao=novo" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Novo Semestre
+            </a>
         </div>
-        <section id="etapas">
-            <c:forEach var="e" items="${['I','II','III','IV','V','VI','VII','VIII']}">
-                <a href="<c:url value='/disciplina'><c:param name='etapa' value='${e}'/></c:url>"
-                   class="tab-semestre ${etapaAtual == e ? 'active' : ''}">
-                    ${e}
-                </a>
-            </c:forEach>
-        </section>
+        <% if (etapasDisponiveis == null || etapasDisponiveis.isEmpty()) { %>
+            <p class="text-muted py-2">Nenhum semestre cadastrado ainda. Clique em "Novo Semestre" para começar.</p>
+        <% } else { %>
+            <section id="etapas">
+                <% for (String e : etapasDisponiveis) { %>
+                    <a href="disciplina?etapa=<%= e %>"
+                       class="tab-semestre <%= e.equals(etapaAtual) ? "active" : "" %>">
+                        <%= e %>
+                    </a>
+                <% } %>
+            </section>
+        <% } %>
     </div>
-
     <div id="disciplinas">
         <div class="card-header-custom">
-            <h5>Disciplinas da Etapa ${etapaAtual}</h5>
-            <a href="<c:url value='/disciplina'><c:param name='acao' value='novo'/><c:param name='etapa' value='${etapaAtual}'/></c:url>"
-               class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-lg"></i> Nova Disciplina
-            </a>
+            <h5>Disciplinas da Etapa <%= etapaAtual != null ? etapaAtual : "-" %></h5>
+            <% if (etapaAtual != null) { %>
+                <a href="disciplina?acao=novo&etapa=<%= etapaAtual %>" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg"></i> Nova Disciplina
+                </a>
+            <% } %>
         </div>
         <table class="table">
             <thead>
@@ -45,29 +59,24 @@
                 </tr>
             </thead>
             <tbody>
-                <c:choose>
-                    <c:when test="${empty disciplinas}">
-                        <tr><td colspan="2" class="text-center text-muted py-3">Nenhuma disciplina cadastrada</td></tr>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="d" items="${disciplinas}">
-                            <tr>
-                                <td>
-                                    <a href="<c:url value='/material'><c:param name='idDisc' value='${d.idDisc}'/></c:url>">
-                                        ${d.nome}
-                                    </a>
-                                </td>
-                                <td class="text-center">
-                                    <a href="<c:url value='/disciplina'><c:param name='acao' value='editar'/><c:param name='id' value='${d.idDisc}'/></c:url>" class="acao-btn editar"><i class="bi bi-pencil"></i></a>
-                                    <a href="<c:url value='/disciplina'><c:param name='acao' value='excluir'/><c:param name='id' value='${d.idDisc}'/><c:param name='etapa' value='${etapaAtual}'/></c:url>" class="acao-btn excluir"><i class="bi bi-trash"></i></a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
+                <% if (disciplinas == null || disciplinas.isEmpty()) { %>
+                    <tr><td colspan="2" class="text-center text-muted py-3">Nenhuma disciplina cadastrada</td></tr>
+                <% } else {
+                    for (model.Disciplina d : disciplinas) { %>
+                        <tr>
+                            <td>
+                                <a href="material?idDisc=<%= d.getIdDisc() %>"><%= d.getNome() %></a>
+                            </td>
+                            <td class="text-center">
+                                <a href="disciplina?acao=editar&id=<%= d.getIdDisc() %>" class="acao-btn editar"><i class="bi bi-pencil"></i></a>
+                                <a href="disciplina?acao=excluir&id=<%= d.getIdDisc() %>&etapa=<%= etapaAtual %>" class="acao-btn excluir"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                <%  }
+                } %>
             </tbody>
         </table>
-        <p class="total-disciplinas">Total de disciplinas: ${disciplinas.size()}</p>
+        <p class="total-disciplinas">Total de disciplinas: <%= disciplinas != null ? disciplinas.size() : 0 %></p>
     </div>
 </body>
 </html>

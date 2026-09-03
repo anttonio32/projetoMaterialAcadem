@@ -55,13 +55,18 @@ public class DisciplinaController extends HttpServlet {
     }
 
     // GET /disciplina?etapa=I  -> lista as disciplinas da etapa (ou I por padrão)
-    private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        List<String> etapasDisponiveis = semestreDao.listarEtapasCadastradas();
 
         String etapa = request.getParameter("etapa");
         if (etapa == null || etapa.isEmpty()) {
-            etapa = "I";
+            etapa = etapasDisponiveis.isEmpty() ? null : etapasDisponiveis.get(0);
         }
-        List<Disciplina> disciplinas = dao.listarPorEtapa(etapa);
+
+        List<Disciplina> disciplinas = (etapa != null) ? dao.listarPorEtapa(etapa) : new java.util.ArrayList<>();
+
+        request.setAttribute("etapasDisponiveis", etapasDisponiveis);
         request.setAttribute("etapaAtual", etapa);
         request.setAttribute("disciplinas", disciplinas);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
