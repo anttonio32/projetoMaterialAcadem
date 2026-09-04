@@ -30,7 +30,7 @@ CREATE TABLE `MaterialAcademico` (
     FOREIGN KEY (`idDisc`) REFERENCES `Disciplina` (`idDisc`)
 );
 
-
+-- INDEX
 CREATE UNIQUE INDEX idx_semestre_etapa
 ON Semestre(Etapa);
 
@@ -47,6 +47,7 @@ BEGIN
 END$
 DELIMITER ;
 
+-- TRIGGER
 DELIMITER $
 DROP TRIGGER IF EXISTS trg_validar_semestreUp $
 CREATE TRIGGER trg_validar_semestreUp
@@ -60,6 +61,33 @@ BEGIN
 END$
 DELIMITER ;
 
+-- VIEW
+CREATE VIEW vw_Materiais AS
+SELECT m.nome AS Material, m.tipo AS Tipo, d.nome AS Disciplina, s.Etapa
+FROM MaterialAcademico m
+JOIN Disciplina d ON m.idDisc = d.idDisc
+JOIN Semestre s ON d.idSem = s.idSem;
+
+-- FUNCTION
+DELIMITER $
+
+CREATE FUNCTION fn_QtdMateriaisPorDisciplina(p_idDisc INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE qtd INT;
+    SELECT COUNT(*) INTO qtd
+    FROM MaterialAcademico
+    WHERE idDisc = p_idDisc;
+    RETURN qtd;
+END$
+
+DELIMITER ;
+
+
+-- SELECTS
 select * from disciplina;
 select * from semestre;
 select * from materialAcademico;
+select * from vw_Materiais;
+select fn_QtdMateriaisPorDisciplina(1) as TotalMateriais;
